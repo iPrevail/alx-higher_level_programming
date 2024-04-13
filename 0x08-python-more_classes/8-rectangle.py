@@ -1,94 +1,101 @@
 #!/usr/bin/python3
-"""Module containing class Rectangle"""
+"""Defines a Rectangle class."""
 
 
 class Rectangle:
-    """Contain instances and methods pertaining to rectangles"""
+    """Display a rectangle.
+    Attributes:
+        number_of_instances (int): The number of Rectangle instances.
+        print_symbol (any): The symbol used for string representation.
+    """
 
     number_of_instances = 0
-    print_symbol = '#'
+    print_symbol = "#"
 
     def __init__(self, width=0, height=0):
-        """Initialize private instance variables for width and height"""
+        """Display a new Rectangle.
+        Args:
+            width (int): The width of the new rectangle.
+            height (int): The height of the new rectangle.
+        """
+        type(self).number_of_instances += 1
         self.width = width
         self.height = height
-        Rectangle.number_of_instances += 1
-
-    @staticmethod
-    def bigger_or_equal(rect_1, rect_2):
-        """Compare two rectangles
-        Return: the biggest rectangle, rect_1 if they have same size"""
-        if not isinstance(rect_1, Rectangle):
-            raise TypeError('rect_1 must be an instance of Rectangle')
-        if not isinstance(rect_2, Rectangle):
-            raise TypeError('rect_2 must be an instance of type rectangle')
-        if rect_2.area() > rect_1.area():
-            return rect_2
-        else:
-            return rect_1
 
     @property
     def width(self):
-        """Access the width of the rectangle"""
+        """set the width of the Rectangle."""
         return self.__width
+
+    @width.setter
+    def width(self, value):
+        if not isinstance(value, int):
+            raise TypeError("width must be an integer")
+        if value < 0:
+            raise ValueError("width must be >= 0")
+        self.__width = value
 
     @property
     def height(self):
-        """Access the height of the rectangle"""
+        """set the height of the Rectangle."""
         return self.__height
 
     @height.setter
     def height(self, value):
-        """Set or change the height of the rectangle"""
-
         if not isinstance(value, int):
-            raise TypeError('height must be an integer')
+            raise TypeError("height must be an integer")
         if value < 0:
-            raise ValueError('height must be >= 0')
+            raise ValueError("height must be >= 0")
         self.__height = value
 
-    @width.setter
-    def width(self, value):
-        """Set or change the width of the rectangle"""
-
-        if not isinstance(value, int):
-            raise TypeError("width must be an integer")
-        if value < 0:
-            raise ValueError('width must be >= 0')
-        self.__width = value
-
     def area(self):
-        """Return the area of a rectangle"""
-        return self.width * self.height
+        """Return the area of the Rectangle."""
+        return (self.__width * self.__height)
 
     def perimeter(self):
-        """Return the perimeter of the rectangle"""
-        if self.width != 0 and self.height != 0:
-            return 2 * (self.height + self.width)
-        else:
-            return 0
+        """Return the perimeter of the Rectangle."""
+        if self.__width == 0 or self.__height == 0:
+            return (0)
+        return ((self.__width * 2) + (self.__height * 2))
+
+    @staticmethod
+    def bigger_or_equal(rect_1, rect_2):
+        """Return the Rectangle with the greater area.
+        Args:
+            rect_1 (Rectangle): The first Rectangle.
+            rect_2 (Rectangle): The second Rectangle.
+        Raises:
+            TypeError: If either of rect_1 or rect_2 is not a Rectangle.
+        """
+        if not isinstance(rect_1, Rectangle):
+            raise TypeError("rect_1 must be an instance of Rectangle")
+        if not isinstance(rect_2, Rectangle):
+            raise TypeError("rect_2 must be an instance of Rectangle")
+        if rect_1.area() >= rect_2.area():
+            return (rect_1)
+        return (rect_2)
 
     def __str__(self):
-        """Return a string representation of a rectangle"""
-        recta = ""
-        unit = 0
-        while unit < self.height:
-            wid = 0
-            while wid < self.width:
-                recta += Rectangle.print_symbol
-                wid += 1
-            if unit < self.height - 1:
-                recta += "\n"
-            unit += 1
-        return recta
+        """Return the printable representation of the Rectangle.
+        Represents the rectangle with the # character.
+        """
+        if self.__width == 0 or self.__height == 0:
+            return ("")
+
+        rect = []
+        for i in range(self.__height):
+            [rect.append(str(self.print_symbol)) for j in range(self.__width)]
+            if i != self.__height - 1:
+                rect.append("\n")
+        return ("".join(rect))
 
     def __repr__(self):
-        """Return the official string representation of a rectangle
-        This can be used to recreate it"""
-
-        return f"Rectangle({self.width}, {self.height})"
+        """Return the string representation of the Rectangle."""
+        rect = "Rectangle(" + str(self.__width)
+        rect += ", " + str(self.__height) + ")"
+        return (rect)
 
     def __del__(self):
-        """Detect object deletion"""
+        """Print a message for every deletion of a Rectangle."""
+        type(self).number_of_instances -= 1
         print("Bye rectangle...")
-        Rectangle.number_of_instances -= 1
